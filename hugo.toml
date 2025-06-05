@@ -1,0 +1,29 @@
+baseURL = 'https://mariomoura.com/'
+languageCode = 'en-us'
+title = 'Mario Moura'
+#theme = 'notrack'
+theme = 'github-style'
+pygmentsCodeFences = true
+pygmentsUseClasses = true
+
+[params]
+enableSearch = true
+author = 'Mario Moura'
+description = 'Testing'
+url = 'https://mariomoura.com/'
+avatar = "/img/main.jpg"
+headerIcon = "/img/main.jpg"
+favicon = "/img/main.jpg"
+location = "Brazil"
+mainSections = ['posts']
+lastmod = true
+blogLatestHeading = 'My Writing'
+nBlogLatest = 6
+#footer = "Please, feel at home!"
+github = 'MarioMoura'
+email = 'mm@mariomoura.com'
+rss = "yes"  # Value doesn't matter - it will always link to your blog RSS
+linkedin = "mario-moura"
+[[params.links]]
+title = "Link"
+href = "https://github.com/meik2333"
