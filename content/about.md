@@ -1,12 +1,12 @@
 +++
-date = '2025-04-14T12:34:24-03:00'
 draft = false
+date = ''
 title = ''
 +++
 
-Hello, my name is Mario, welcome to my webpage. Thanks for stopping by!
+## Contact
 
-# Contact
+Email: {{< mail >}}
 
 
 ### GPG
