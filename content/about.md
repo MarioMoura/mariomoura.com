@@ -6,7 +6,7 @@ title = ''
 
 ## Contact
 
-Email: {{< mail >}}
+E-mail: [{{< params "mail" >}}](mailto:{{< params "mail" >}})
 
 
 ### GPG
@@ -26,5 +26,5 @@ Feel free to send me encrypted mail!
 
 ### CV
 
-If you are after my CV, it can be found [here](https://cv.mariomoura.com). It was
+If you are after my CV, it can be found [here](https://cv.mariomoura.com). Source code [here](https://github.com/MarioMoura/cv.mariomoura.com)
 made using LaTex, if you need the template let me know!

@@ -4,14 +4,13 @@ title = 'Mario Moura'
 theme = 'ficurinia'
 defaultContentLanguage = "en"
 
-mail = "mm@mariomoura.com"
 
 enableGitInfo = true
 
 # this will be included in the footer after the current year the site is last
 # built, followed by the (c) symbol
 # you can use markdown inside this field
-copyright = "Some copyright notice - [my license](https://example.com/license)"
+copyright = "Mario Moura"
 
 summaryLength = 70  # number of words for article summaries
 
@@ -22,8 +21,11 @@ summaryLength = 70  # number of words for article summaries
     pagerSize = 5  # number of articles per page in the index
 
 [params]
-    author = "Gabriele Musco"
+    author = "Mario Moura"
+	mail = "mm@mariomoura.com"
     description = "A description for my website"  # this will be added as metadata
+
+	wpm = 200
 
     posts = "post"  # content directory where to find home page posts; default searches in "posts" and "post"
     showPostsLink = false  # show or hide the link to the simple post list
@@ -46,7 +48,7 @@ summaryLength = 70  # number of words for article summaries
 
     logoRightOfTitle = false  # positions the logo to the right of the title; default: false
 
-    showTags = true  # show the Tags menu item; default true
+    showTags = false  # show the Tags menu item; default true
     showRss = true  # show the link for the RSS feed; default true
 
     imageInArticlePreview = true  # show images in article preview; default false
@@ -125,6 +127,16 @@ summaryLength = 70  # number of words for article summaries
         name = "Posts"
         url = "/post/"
         weight = 20
+    [[menu.main]]
+        identifier = "cv"
+        name = "CV"
+        url = "https://cv.mariomoura.com"
+        weight = 40
+    [[menu.main]]
+        identifier = "tags"
+        name = "Tags"
+        url = "/tags/"
+        weight = 100
     # these links (menu.icons) will be added as icon links below the main nav
     [[menu.icons]]
         identifier = "github"

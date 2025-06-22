@@ -3,7 +3,7 @@ date = '2025-06-14T16:51:33-03:00'
 draft = false
 title = 'SSH Ask Pass: using passwords seamlessly'
 image = '/img/posts/ssh-ask-pass.png'
-summary =  'This article explains how to set up automatic decryption of SSH keys and how to encrypt them'
+summary =  'This article explains how to set up automatic decryption of SSH keys and how to encrypt them.'
 tags = [
     "linux",
     "security",
@@ -57,12 +57,20 @@ you wont have to type it.
 ### Creating an ASKPASS script
 Now, let us create a script to retrieve the ssh password.
 
-The only thing it needs to do is print out the password, so it could be any password manager `decrypt`
+The only thing it needs to do is print out the password when ssh asks, so it could be any password manager `decrypt`
 command or even a `gpg --decrypt`. In any case, create a script with that command:
 ```
-#!/bin/sh
-<command>
+#!/bin/bash
+if echo "$1" | grep -q "Enter passphrase for key"
+then
+	<command>
+else
+	echo "$1" >&2
+	read -r CHOICE
+	echo "$CHOICE"
+fi
 ```
+
 Drop it in your `$PATH` and remember its name (I'll call it `sshpass`).
 
 Also, in my case `pass` is the password manager of choice, so the `command` here is: `pass <path>`.
@@ -120,3 +128,23 @@ ssh-keygen -p -f <key>
 If you went through the previous steps, no password prompt is required, SSH will automatically retrieve the
 password.
 
+## ASKPASS implementation
+
+You may have wondered how that script works.
+
+SSH calls the `ASKPASS` script multiple times depending on you host situation, meaning that when
+the server key is not yet scanned ssh will ask you to accept it or not, like this:
+```
+The authenticity of host 'example.com (example.com)' can't be established.
+ED25519 key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:1: example.com
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+And every time that ssh needs an input it will call you program, that means it will respond to that question
+with your password! SSH will refuse and will ask again, then ASKPASS will output you password again, generating
+an infinite loop.
+
+To avoid that, ASKPASS needs to check if SSH is actually asking for a password. That can be done by *grepping*
+the input argument *$1*.
