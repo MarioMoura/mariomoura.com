@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf public
+
 hugo
 
 rsync \
@@ -7,4 +9,6 @@ rsync \
 	--rsync-path="sudo rsync" \
 	-Pr \
 	--chmod="D755,F644" \
-	public/* server:/var/www/html/mariomoura.com/
+	--delete \
+	-c \
+	public/ server:/var/www/html/mariomoura.com/

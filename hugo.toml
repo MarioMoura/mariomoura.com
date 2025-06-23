@@ -39,7 +39,7 @@ summaryLength = 70  # number of words for article summaries
     homeSinglePage = "/home"
 
     # It's best to put these icons in the "static" folder of your site
-    logo = "/img/main.jpg"
+    logo = "/img/avatar.jpg"
     #favicon = "/favicon.png"  # 32x32
     #faviconIco = "/favicon.ico"  # 32x32
     #appletouch = "/apple-touch-icon.png"  # 180x180
