@@ -29,7 +29,7 @@ summaryLength = 70  # number of words for article summaries
 
     posts = "post"  # content directory where to find home page posts; default searches in "posts" and "post"
     showPostsLink = false  # show or hide the link to the simple post list
-    extraContentDirs = []  # other content directories to render similarly to the home page
+    extraContentDirs = ['dotfiles']  # other content directories to render similarly to the home page
     showcaseDir = "showcase"  # create a content directory that shows a special showcase section in the home page
 
     # shows a specified single page as a home page, instead of the traditional articles list
