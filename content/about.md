@@ -14,7 +14,7 @@ E-mail: [{{< params "mail" >}}](mailto:{{< params "mail" >}})
 To get my GPG Key please issue this command:
 
 ```
-curl -sL https://mariomoura.com/mariomoura.gpg
+curl -sL https://mariomoura.com/mm.gpg
 ```
 
 Use `gpg --import`. The key fingerprint is:
