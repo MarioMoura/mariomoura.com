@@ -31,7 +31,7 @@ to it, you are adding one more category: "Something you know".
 Furthermore, if that password comes from another 'secure program'(whatever that means), like `gpg`,
 you are adding another ring to the chain.
 
-For example: Imagine that you manage you passwords using
+For example: Imagine that you manage your passwords using
 GPG smartcard with your private key inside, and you use that private key to encrypt the SSH password,
 you will have then:
 ```
@@ -52,16 +52,16 @@ To manage the keys we will need 3 steps:
 - Encrypt the keys
 
 After the first 2 steps, every time that you try to decrypt/encrypt a key SSH will use your program, meaning that
-you wont have to type it.
+you won't have to type it.
 
 ### Creating an ASKPASS script
 Now, let us create a script to retrieve the ssh password.
 
-The only thing it needs to do is print out the password when ssh asks, so it could be any password manager `decrypt`
+The only thing it needs to do is print out the password when ssh asks so it could be any password manager `decrypt`
 command or even a `gpg --decrypt`. In any case, create a script with that command:
 ```
 #!/bin/bash
-if echo "$1" | grep -q "Enter passphrase for key"
+if echo "$1" | grep -q -e "Enter passphrase for" -e "Enter same passphrase again"
 then
 	<command>
 else
@@ -132,7 +132,7 @@ password.
 
 You may have wondered how that script works.
 
-SSH calls the `ASKPASS` script multiple times depending on you host situation, meaning that when
+SSH calls the `ASKPASS` script multiple times depending on your host situation, meaning that when
 the server key is not yet scanned ssh will ask you to accept it or not, like this:
 ```
 The authenticity of host 'example.com (example.com)' can't be established.
