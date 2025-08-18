@@ -156,7 +156,7 @@ summaryLength = 70  # number of words for article summaries
     [[menu.icons]]
         identifier = "gpg"
         name = "GPG"
-        url = "/mariomoura.gpg"
+        url = "/mm.gpg"
         weight = 40
 
 # this section is necessary if you want infinite scrolling
