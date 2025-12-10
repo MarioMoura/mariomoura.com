@@ -1,0 +1,84 @@
+---
+- name: Deploy mariomoura.com Hugo site
+  hosts: server.mariomoura.org
+  become: yes
+  vars:
+    web_dir: /var/www/html/mariomoura.com
+    nginx_config: /etc/nginx/conf.d/20-mariomoura.com.conf
+    ssl_cert: /etc/ssl/fullchain/mariomoura.com.crt
+    ssl_key: /etc/ssl/private/mariomoura.com.pem
+
+  tasks:
+    - name: Build Hugo site locally
+      become: false
+      local_action:
+        module: shell
+        cmd: hugo
+        chdir: "../"
+
+    - name: Create web directory
+      file:
+        path: "{{ web_dir }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Sync Hugo public files to web directory
+      synchronize:
+        src: "../public/"
+        dest: "{{ web_dir }}/"
+        delete: yes
+        checksum: yes
+        owner: no
+        group: no
+        rsync_path: sudo rsync
+        rsync_opts:
+          - "--chmod=D755,F644"
+      become: yes
+      notify: reload nginx
+      tags:
+        - sync
+
+    - name: Set ownership for web files
+      file:
+        path: "{{ web_dir }}"
+        owner: www-data
+        group: www-data
+        recurse: yes
+      changed_when: false
+
+    - name: Create nginx configuration
+      copy:
+        dest: "{{ nginx_config }}"
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          # Main Site
+          server {
+            listen 443 ssl;
+            ssl_certificate {{ ssl_cert }};
+            ssl_certificate_key {{ ssl_key }};
+            ssl_protocols TLSv1.2 TLSv1.3;
+            ssl_ciphers HIGH:!aNULL:!MD5;
+            server_name mariomoura.com www.mariomoura.com;
+            error_page 404 /404.html;
+            location / {
+              root {{ web_dir }}/;
+              include  /etc/nginx/mime.types;
+            }
+          }
+      notify: reload nginx
+      tags:
+        - nginx
+
+    - name: Test nginx configuration
+      command: nginx -t
+      changed_when: false
+
+  handlers:
+    - name: reload nginx
+      systemd:
+        name: nginx
+        state: reloaded
