@@ -4,7 +4,7 @@
   become: yes
   vars:
     web_dir: /var/www/html/mariomoura.com
-    nginx_config: /etc/nginx/conf.d/20-mariomoura.com.conf
+    nginx_config: /etc/nginx/sites-enabled/mariomoura.com
     ssl_cert: /etc/ssl/fullchain/mariomoura.com.crt
     ssl_key: /etc/ssl/private/mariomoura.com.pem
 
