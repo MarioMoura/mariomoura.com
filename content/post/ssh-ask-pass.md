@@ -1,7 +1,7 @@
 +++
 date = '2025-06-14T16:51:33-03:00'
 draft = false
-title = 'SSH Ask Pass: using passwords seamlessly'
+title = 'SSH_ASKPASS: automatic key passphrases'
 image = '/img/posts/ssh-ask-pass.png'
 summary =  'This article explains how to set up automatic decryption of SSH keys and how to encrypt them.'
 tags = [
@@ -42,7 +42,7 @@ Your GPG password --> Smartcard ------> SSH Password -------> SSH Key -------> S
                       biometrics)
 ```
 
-Ultimately, this setup is very extensible/customizable, you and add or remove layers as you see fit.
+Ultimately, this setup is very extensible/customizable, you can add or remove layers as you see fit.
 
 ## Managing the key automatically
 
@@ -59,7 +59,7 @@ Now, let us create a script to retrieve the ssh password.
 
 The only thing it needs to do is print out the password when ssh asks so it could be any password manager `decrypt`
 command or even a `gpg --decrypt`. In any case, create a script with that command:
-```
+```bash
 #!/bin/bash
 if echo "$1" | grep -q -e "Enter passphrase for" -e "Enter same passphrase again"
 then
@@ -78,8 +78,8 @@ Also, in my case `pass` is the password manager of choice, so the `command` here
 ### Setting up environment variables
 
 Now that we have a program in place we need to set 2 variables:
-```
-# Drop it in you .bashrc(or equivalent)
+```bash
+# Drop it in your .bashrc(or equivalent)
 export SSH_ASKPASS="sshpass"
 export SSH_ASKPASS_REQUIRE=prefer
 ```
@@ -92,10 +92,10 @@ From the documentation:
                              (Note  that  on  some  machines it may be necessary to redirect the input from /dev/null to make
                              this work.)
 
-       SSH_ASKPASS_REQUIRE   Allows further control over the use of an askpass program.  If this variable is set  to  “never”
-                             then  ssh  will never attempt to use one.  If it is set to “prefer”, then ssh will prefer to use
+       SSH_ASKPASS_REQUIRE   Allows further control over the use of an askpass program.  If this variable is set  to  "never"
+                             then  ssh  will never attempt to use one.  If it is set to "prefer", then ssh will prefer to use
                              the askpass program instead of the TTY when requesting passwords.  Finally, if the  variable  is
-                             set  to  “force”,  then  the askpass program will be used for all passphrase input regardless of
+                             set  to  "force",  then  the askpass program will be used for all passphrase input regardless of
                              whether DISPLAY is set.
 ```
 
@@ -103,17 +103,17 @@ Unfortunately, `SSH_ASKPASS` doesn't take any arguments, it has to be only the s
 
 Note: the manual for those variables can be accessed using: `man ssh`.
 
-### How to check if its encrypted
+### How to check if it's encrypted
 
 Given that your ssh is configured to automatically retrieve the password, and you have those two variables
 set into `.bashrc`, use this to disable them temporarily:
-```
+```bash
 unset SSH_ASKPASS
 unset SSH_ASKPASS_REQUIRE
 ```
 
 Now use this command to check if a key has a password:
-```
+```bash
 ssh-keygen -y -f <key>
 ```
 The `-y` flag prints out the public key part, if the private has a password the program will open a prompt,
@@ -122,7 +122,7 @@ if not the public key will just go to stdout.
 ### How to encrypt a key
 
 To encrypt a key use this command:
-```
+```bash
 ssh-keygen -p -f <key>
 ```
 If you went through the previous steps, no password prompt is required, SSH will automatically retrieve the
@@ -142,8 +142,8 @@ This host key is known by the following other names/addresses:
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
-And every time that ssh needs an input it will call you program, that means it will respond to that question
-with your password! SSH will refuse and will ask again, then ASKPASS will output you password again, generating
+And every time that ssh needs an input it will call your program, that means it will respond to that question
+with your password! SSH will refuse and will ask again, then ASKPASS will output your password again, generating
 an infinite loop.
 
 To avoid that, ASKPASS needs to check if SSH is actually asking for a password. That can be done by *grepping*
